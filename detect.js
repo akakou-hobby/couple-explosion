@@ -55,18 +55,14 @@ function isShakeHand(keypointsA, keypointsB) {
 
     const width = width1 > width2 ? width1 : width2
 
-    console.log(distance, width)
     return distance < width * THRESHOLD
 }
 
 function modelReady() {
     poseNet.on('pose', function (poses) {
-        // if (timer.count % 3 || !timer.isNew()) return
-
         setPoses(poses)
 
         if (timer.isLocked) return
-
         timer.lock()
 
         if (poses.length != 2 || !isShakeHand(poses[0].pose.keypoints, poses[1].pose.keypoints)) return
@@ -79,17 +75,12 @@ function modelReady() {
         const y = poses[0].pose.keypoints[LEFT_SHOLDER].position.y - width / EXPLOSION_SCALE
         const height = width
 
-        // console.log(pose)
-
         const explosion = new Expolosion(
             explosions.length,
             x,
             y,
             width,
             height)
-
-        // console.log("objects: ", object)
-        // console.log("explosion: ", explosion)
 
         explosion.play()
         explosions.push(explosion)

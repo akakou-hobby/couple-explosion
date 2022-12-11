@@ -17,8 +17,6 @@ class TimerLock {
             self.isLocked = false
         }, TIMER_DURATION)
     }
-
-
 }
 
 const timer = new TimerLock()
