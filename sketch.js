@@ -12,7 +12,4 @@ function setup() {
     video.hide();
 }
 
-function draw() {
-    // render()
-}
 

@@ -1,16 +1,11 @@
-function startDetecting() {
-    alert('hello')
-
+async function startDetecting() {
     const status = select('#status');
     status.html('モデルを読み込んだ');
 
-    (async () => {
-        while (true) {
-            await detect();
-            render();
-        }
-    })()
-
+    while (true) {
+        await detect();
+        render();
+    }
 }
 
 function detect() {
