@@ -1,4 +1,5 @@
 let poses = [];
+let specialPoints = ["rightWrist", "leftWrist"];
 
 function setPoses(p) {
     poses = p;
@@ -11,9 +12,16 @@ function drawPoseNet() {
     }
 }
 
+
 function drawKeyPoint(pose) {
     for (let keypoint of pose.pose.keypoints) {
-        fill(255, 0, 0);
+        const hasKeyPoint = specialPoints.findIndex((element) => element == keypoint.part) == -1
+
+        if (hasKeyPoint)
+            fill(255, 0, 0);
+        else
+            fill(0, 255, 0);
+
         noStroke();
         ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
     }
