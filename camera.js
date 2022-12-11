@@ -19,8 +19,11 @@ function getDevices(deviceInfos) {
 }
 
 function selectDevice(devices) {
+    capture = createCapture(VIDEO);
+    capture.hide();
+
     for (let device of devices) {
-        var result = confirm(`カメラ"${device.label}"を使いますか？\n（使わない場合、別のカメラを使うかこの後聞きます）`);
+        var result = confirm(`カメラ"${device.label}(${device.id})"を使いますか？\n（使わない場合、別のカメラを使うかこの後聞きます）`);
 
         if (!result) continue
 
@@ -32,7 +35,8 @@ function selectDevice(devices) {
             }
         };
 
-        return createCapture(constraints);
+        capture = createCapture(constraints);
+        return capture
     }
 
     alert("カメラが見つかりませんでした。リロードしてださい。");
