@@ -1,15 +1,21 @@
-let video;
-let yolo;
-let objects = [];
 
-function setup() {
-    createCanvas(320, 240);
+async function setup() {
+    createCanvas(640, 480);
+
     video = createCapture(VIDEO);
-    video.size(320, 240);
-
-    yolo = ml5.YOLO(video, startDetecting);
-
+    createCanvas(640, 480);
     video.hide();
+
+    detector = ml5.objectDetector('cocossd', startDetecting);
 }
 
+function draw() {
+
+    // image(video, 0, 0, width, height);
+    image(video, 0, 0);
+
+    for (const explosion of explosions) {
+        explosion.draw()
+    }
+}
 

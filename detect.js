@@ -1,35 +1,46 @@
+async function sleep(time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 async function startDetecting() {
-    const status = select('#status');
-    status.html('モデルを読み込んだ');
+    const status = document.getElementById('status')
+    status.innerText = 'モデルを読み込んだ';
 
     while (true) {
-        await detect();
-        render();
+        await sleep(2000)
+        const results = await detect();
+        generateExplosion(results);
     }
 }
 
 function detect() {
-    return new Promise(resolve => {
-        yolo.detect(function (err, results) {
-            objects = results;
-            console.log(objects)
-            resolve()
+    return new Promise((resolve, reject) => {
+        detector.detect(video, function (err, results) {
+            if (err) {
+                reject(err)
+            }
+
+            resolve(results)
         });
     })
 }
 
-function render() {
-    image(video, 0, 0, width, height);
+function generateExplosion(objects) {
+    // console.log(objects)
 
-    for (let i = 0; i < objects.length; i++) {
-        noStroke();
-        fill(0, 255, 0);
+    for (const object of objects) {
+        if (object.label != 'person') return
 
-        text(objects[i].className, objects[i].x * width, objects[i].y * height - 5);
-        noFill();
-        strokeWeight(4);
-        stroke(0, 255, 0);
+        const explosion = new Expolosion(
+            object.x,
+            object.y,
+            object.width,
+            object.height)
 
-        rect(objects[i].x * width, objects[i].y * height, objects[i].w * width, objects[i].h * height);
+        // console.log("objects: ", object)
+        // console.log("explosion: ", explosion)
+
+        explosion.load()
+        explosions.push(explosion)
     }
 }
