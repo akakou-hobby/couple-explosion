@@ -49,6 +49,6 @@ class Expolosion {
         noStroke();
         fill(255);
         textSize(24);
-        text("person", this.x + 10, this.y + 24);
+        text("explosion", this.x + 10, this.y + 24);
     }
 }
