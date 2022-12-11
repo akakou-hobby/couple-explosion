@@ -4,4 +4,4 @@ let objects = []
 let explosions = []
 var a = null;
 
-var IMG, SOUND;
+var SOUND;

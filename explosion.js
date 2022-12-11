@@ -9,24 +9,35 @@ class Expolosion {
         this.imageSize = width > height ? width : height
     }
 
+    delete() {
+        explosions.splice(this.index, this.index)
+    }
+
     play() {
-        IMAGE = loadImage('./assets/explosion.gif')
-        IMAGE.resize(this.imageSize, this.imageSize);
-        IMAGE.play()
+        this.img = loadImage('./assets/explosion.gif')
+        this.img.resize(this.imageSize, this.imageSize);
+        this.img.play()
         SOUND.play()
     }
 
     draw() {
+        if (!this.img.gifProperties) return
+
+        if (!this.img.gifProperties.playing) {
+            this.delete()
+            return
+        }
+
         const x = this.x + (this.width - this.imageSize) / 2
 
-        if (IMAGE.gifProperties && IMAGE.gifProperties.playing) {
-            this.showDetection()
-            image(IMAGE, x, this.y, this.imageSize, this.imageSize);
-        }
+        // if (this.img.gifProperties && this.img.gifProperties.playing) {
+        this.showDetection()
+        image(this.img, x, this.y, this.imageSize, this.imageSize);
+        // }
     }
 
     showDetection() {
-        image(video, 0, 0);
+        // image(video, 0, 0);
         console.log(1)
         stroke(0, 255, 0);
         strokeWeight(4);
