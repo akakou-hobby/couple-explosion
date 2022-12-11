@@ -1,5 +1,5 @@
 let video;
-let detector;
+let poseNet;
 let objects = []
 let explosions = []
 var a = null;

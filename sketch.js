@@ -13,12 +13,15 @@ async function setup() {
 
     createCanvas(WIDTH, HEIGHT);
 
-    detector = ml5.objectDetector('cocossd', startDetecting);
+    poseNet = ml5.poseNet(video, "multiple", modelReady);
+
 }
 
 function draw() {
-    image(video, 0, 0, WIDTH, HEIGHT);
+    image(video, 0, 0, WIDTH, HEIGHT)
     // console.log(2)
+
+    // drawPoseNet()
 
     // image(video, 0, 0, WIDTH, HEIGHT);
     for (const explosion of explosions) {
