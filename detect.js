@@ -62,9 +62,13 @@ function isShakeHand(keypointsA, keypointsB) {
 function modelReady() {
     poseNet.on('pose', function (poses) {
         // if (timer.count % 3 || !timer.isNew()) return
-        timer.commit()
 
         setPoses(poses)
+
+        if (timer.isLocked) return
+
+        timer.lock()
+
         if (poses.length != 2 || !isShakeHand(poses[0].pose.keypoints, poses[1].pose.keypoints)) return
 
         const vec = calcCoupleXPositionVector(poses[0].pose.keypoints, poses[1].pose.keypoints)

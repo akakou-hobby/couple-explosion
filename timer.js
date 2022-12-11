@@ -2,30 +2,23 @@ async function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-class Timer {
+const TIMER_DURATION = 500
+
+class TimerLock {
     constructor() {
-        this.count = 0
-
-        // todo: rename
-        this.past = 0
+        this.isLocked = false
     }
 
-    start() {
+    lock() {
         const self = this
+        this.isLocked = true
 
-        setInterval(() => {
-            self.count++
-        }, 1000)
+        setTimeout(() => {
+            self.isLocked = false
+        }, TIMER_DURATION)
     }
 
-    commit() {
-        this.past = this.count
-    }
 
-    isNew() {
-        return this.past < this.count
-    }
 }
 
-const timer = new Timer()
-timer.start()
+const timer = new TimerLock()
