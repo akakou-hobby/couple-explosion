@@ -1,5 +1,6 @@
 class Expolosion {
-    constructor(x, y, width, height) {
+    constructor(index, x, y, width, height) {
+        this.index = index
         this.x = x
         this.y = y
         this.width = width

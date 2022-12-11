@@ -27,11 +27,11 @@ function detect() {
 
 function generateExplosion(objects) {
     // console.log(objects)
-
     for (const object of objects) {
         if (object.label != 'person') return
 
         const explosion = new Expolosion(
+            explosions.length,
             object.x,
             object.y,
             object.width,
