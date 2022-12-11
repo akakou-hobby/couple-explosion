@@ -8,7 +8,7 @@ function setup() {
     video = createCapture(VIDEO);
     video.size(320, 240);
 
-    yolo = ml5.YOLO(video, startDetecting);
+yolo = ml5.YOLO(video, startDetecting);
 
     video.hide();
     status = select('#status');
