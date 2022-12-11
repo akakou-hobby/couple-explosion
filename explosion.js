@@ -10,7 +10,10 @@ class Expolosion {
     }
 
     delete() {
-        explosions.splice(this.index, this.index)
+        const index = explosions.findIndex((element) => element.index == this.index)
+
+        console.log(index)
+        explosions.splice(index, index)
     }
 
     play() {
