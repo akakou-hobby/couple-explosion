@@ -3,8 +3,8 @@ async function sleep(time) {
 }
 
 async function startDetecting() {
-    const status = document.getElementById('status')
-    status.innerText = 'モデルを読み込んだ';
+    // const status = document.getElementById('status')
+    // status.innerText = 'モデルを読み込んだ';
 
     while (true) {
         await sleep(2000)
@@ -40,7 +40,7 @@ function generateExplosion(objects) {
         // console.log("objects: ", object)
         // console.log("explosion: ", explosion)
 
-        explosion.load()
+        explosion.play()
         explosions.push(explosion)
     }
 }
