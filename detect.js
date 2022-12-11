@@ -1,4 +1,6 @@
-const THRESHOLD = 0.5
+const HAND_SHAKE_THRESHOLD = 0.5
+const SAME_USER_THRESHOLD = 1
+
 const EXPLOSION_SCALE = 2
 
 const LEFT_EAR = 3
@@ -16,6 +18,35 @@ function calcEuqurideanDistance(a, b) {
     return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2))
 }
 
+function isSamePosition(ax, ay, bx, by, keypointsA, keypointsB, threshold) {
+    const distance1 = calcEuqurideanDistance(ax, ay)
+    const distance2 = calcEuqurideanDistance(bx, by)
+
+    const distance = distance1 < distance2 ? distance1 : distance2
+
+    const width1 = calcFaceWidth(keypointsA)
+    const width2 = calcFaceWidth(keypointsB)
+
+    const width = width1 > width2 ? width1 : width2
+
+    return distance < width * threshold
+}
+
+function isSamePerson(keypointsA, keypointsB) {
+    return isSamePosition(keypointsA[LEFT_SHOLDER].position, keypointsB[LEFT_SHOLDER].position,
+        keypointsA[RIGHT_EAR].position, keypointsB[RIGHT_EAR].position,
+        keypointsA, keypointsB, SAME_USER_THRESHOLD
+    )
+}
+
+function isShakeHand(keypointsA, keypointsB) {
+    return isSamePosition(keypointsA[LEFT_WLIST].position, keypointsB[RIGHT_WLIST].position,
+        keypointsA[RIGHT_WLIST].position, keypointsB[LEFT_WLIST].position,
+        keypointsA, keypointsB, HAND_SHAKE_THRESHOLD
+    )
+}
+
+
 function calcFaceWidth(keypoints) {
     const x = keypoints[LEFT_EAR].position.x
     const width = keypoints[RIGHT_EAR].position.x - x
@@ -30,7 +61,6 @@ function calcCoupleXPositionVector(keypointsA, keypointsB) {
     const rightA = keypointsA[RIGHT_SHOLDER].position.x
     const rightB = keypointsB[RIGHT_SHOLDER].position.x
 
-
     const unSubedX = leftA < leftB ? leftA : leftB
 
     const a1 = Math.abs(leftA - rightB)
@@ -44,28 +74,16 @@ function calcCoupleXPositionVector(keypointsA, keypointsB) {
     return { x, width }
 }
 
-function isShakeHand(keypointsA, keypointsB) {
-    const distance1 = calcEuqurideanDistance(keypointsA[LEFT_WLIST].position, keypointsB[RIGHT_WLIST].position)
-    const distance2 = calcEuqurideanDistance(keypointsA[RIGHT_WLIST].position, keypointsB[LEFT_WLIST].position)
-
-    const distance = distance1 < distance2 ? distance1 : distance2
-
-    const width1 = calcFaceWidth(keypointsA)
-    const width2 = calcFaceWidth(keypointsB)
-
-    const width = width1 > width2 ? width1 : width2
-
-    return distance < width * THRESHOLD
-}
 
 function modelReady() {
     poseNet.on('pose', function (poses) {
         setPoses(poses)
 
+        if (poses.length != 2 || !isShakeHand(poses[0].pose.keypoints, poses[1].pose.keypoints)) return
+        if (isSamePerson(poses[0].pose.keypoints, poses[1].pose.keypoints)) return;
+
         if (timer.isLocked) return
         timer.lock()
-
-        if (poses.length != 2 || !isShakeHand(poses[0].pose.keypoints, poses[1].pose.keypoints)) return
 
         const vec = calcCoupleXPositionVector(poses[0].pose.keypoints, poses[1].pose.keypoints)
 
