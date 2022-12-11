@@ -3,7 +3,10 @@ function preload() {
 }
 
 async function setup() {
-    video = createCapture(VIDEO);
+    const deviceInfos = await navigator.mediaDevices.enumerateDevices()
+    const devices = getDevices(deviceInfos)
+
+    video = selectDevice(devices);
     video.hide();
 
     await sleep(3000)
@@ -14,7 +17,7 @@ async function setup() {
     createCanvas(WIDTH, HEIGHT);
 
     poseNet = ml5.poseNet(video, {
-    minConfidence: 0.9,
+        minConfidence: 0.9,
         detectionType: "multiple",
         maxPoseDetections: 2,
 
