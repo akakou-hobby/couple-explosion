@@ -13,7 +13,10 @@ async function setup() {
 
     createCanvas(WIDTH, HEIGHT);
 
-    poseNet = ml5.poseNet(video, "multiple", modelReady);
+    poseNet = ml5.poseNet(video, {
+        minConfidence: 0.7,
+        detectionType: "multiple"
+    }, modelReady);
 
 }
 
