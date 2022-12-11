@@ -21,7 +21,7 @@ function draw() {
     image(video, 0, 0, WIDTH, HEIGHT)
     // console.log(2)
 
-    // drawPoseNet()
+    drawPoseNet()
 
     // image(video, 0, 0, WIDTH, HEIGHT);
     for (const explosion of explosions) {
